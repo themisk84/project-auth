@@ -26,15 +26,11 @@ const User = mongoose.model("User", UserSchema);
 const port = process.env.PORT || 8080;
 const app = express();
 
-const authenticateUser = async (req, res, next) => {
-  // const user = await User.findOne({ accessToken: req.header("Authorization") });
-  // if (user) {
-  //   req.user = user;
-  //   next();
-  // } else {
-  //   res.status(401).json({ loggedOut: true });
-  // }
+// Add middlewares to enable cors and json body parsing
+app.use(cors());
+app.use(express.json());
 
+const authenticateUser = async (req, res, next) => {
   const accessToken = req.header("Authorization");
   try {
     const user = await User.findOne({ accessToken });
@@ -51,9 +47,30 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
-// Add middlewares to enable cors and json body parsing
-app.use(cors());
-app.use(express.json());
+app.get("/secretContent", authenticateUser),
+  app.get("/secretContent", async (req, res) => {
+    // res.json("messages");
+    // try {
+    //   const user = await User.findOne({ username });
+    //   res.status(200).json({
+    //     userId: user._id,
+    //     username: user.username,
+    //     secretContent: user.secretContent,
+    //   });
+    // } catch {
+    //   res.status(400).json({ response: error, success: false });
+    // }
+
+    const user = await User.findOne({ id: req.body.username });
+
+    // const user = User.find({});
+    res.json({
+      username: user.username,
+      response: user.secretContent,
+      success: true,
+    });
+    console.log(user);
+  });
 
 // Start defining your routes here
 app.get("/", (req, res) => {
@@ -104,17 +121,6 @@ app.post("/signin", async (req, res) => {
     res.status(400).json({ response: error, success: false });
   }
 });
-
-app.get("/secretContent", authenticateUser),
-  app.get("/secretContent", async (req, res) => {
-    const { username } = req.body;
-    const user = User.find({ username });
-    res.json({
-      response: user.username,
-      user,
-      success: true,
-    });
-  });
 
 // Start the server
 app.listen(port, () => {
