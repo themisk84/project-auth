@@ -49,21 +49,8 @@ const authenticateUser = async (req, res, next) => {
 
 app.get("/secretContent", authenticateUser),
   app.get("/secretContent", async (req, res) => {
-    // res.json("messages");
-    // try {
-    //   const user = await User.findOne({ username });
-    //   res.status(200).json({
-    //     userId: user._id,
-    //     username: user.username,
-    //     secretContent: user.secretContent,
-    //   });
-    // } catch {
-    //   res.status(400).json({ response: error, success: false });
-    // }
+    const user = await User.findOne({ id: req.body._id });
 
-    const user = await User.findOne({ id: req.body.username });
-
-    // const user = User.find({});
     res.json({
       username: user.username,
       response: user.secretContent,
