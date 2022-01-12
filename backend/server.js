@@ -35,6 +35,7 @@ const authenticateUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ accessToken });
     if (user) {
+      req.user = user;
       next();
     } else {
       res.status(401).json({
@@ -47,17 +48,18 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
-app.get("/secretContent", authenticateUser),
-  app.get("/secretContent", async (req, res) => {
-    const user = await User.findOne({ id: req.body._id });
+app.get("/secretContent", authenticateUser);
+app.get("/secretContent", async (req, res) => {
+  const user = await User.findOne({ _id: req.user._id });
+  console.log("User", req.user);
 
-    res.json({
-      username: user.username,
-      response: user.secretContent,
-      success: true,
-    });
-    console.log(user);
+  res.json({
+    username: user.username,
+    response: user.secretContent,
+    success: true,
   });
+  console.log(user);
+});
 
 // Start defining your routes here
 app.get("/", (req, res) => {

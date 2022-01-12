@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { SIGNIN_URL } from "utils/urls";
@@ -61,7 +61,7 @@ const Signin = () => {
 
   useEffect(() => {
     if (accessToken) {
-      navigate("/");
+      navigate("/user");
     }
   }, [accessToken, navigate]);
 
@@ -85,7 +85,7 @@ const Signin = () => {
         if (data.success) {
           batch(() => {
             dispatch(user.actions.setUserId(data.response.userId));
-            dispatch(user.actions.setUsername(data.response.responseusername));
+            dispatch(user.actions.setUsername(data.response.username));
             dispatch(user.actions.setAccessToken(data.response.accessToken));
             dispatch(user.actions.setError(null));
           });
@@ -107,6 +107,7 @@ const Signin = () => {
 
   return (
     <FormWrapper>
+      <Link to="/user"></Link>
       <Form onSubmit={onHandleSignIn}>
         <SignInHeader>Sign in</SignInHeader>
 
