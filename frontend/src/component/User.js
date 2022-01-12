@@ -68,7 +68,7 @@ const User = () => {
     fetch(SECRET_URL, options)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data.response);
         if (accessToken) {
           dispatch(user.actions.setMessage(data.response));
         } else {
@@ -78,7 +78,7 @@ const User = () => {
   };
   return (
     <UserContainer>
-      Welcome {username} your user id is {userId} {message}
+      Welcome {username} your user id is {userId}
       <Button onClick={handleMessage}>Your secret message!</Button>
       {message && <Message username={username} secretContent={message} />}
       {/* <Link to="/secretContent"></Link> */}

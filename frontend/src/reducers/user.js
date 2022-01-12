@@ -23,7 +23,7 @@ const user = createSlice({
       store.error = action.payload;
     },
     setMessage: (store, action) => {
-      store.response = action.payload;
+      store.message = action.payload;
     },
   },
 });

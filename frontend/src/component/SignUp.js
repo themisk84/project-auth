@@ -39,7 +39,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (accessToken) {
-      navigate("/");
+      navigate("/user");
     }
   }, [accessToken, navigate]);
 
