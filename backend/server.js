@@ -84,10 +84,6 @@ app.post("/signup", async (req, res) => {
   try {
     const salt = bcrypt.genSaltSync();
 
-    if (secretContent.length < 10) {
-      throw { _message: "Password must be at least 10 characters long" };
-    }
-
     const newUser = await new User({
       username,
       password: bcrypt.hashSync(password, salt),

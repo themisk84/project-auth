@@ -153,10 +153,10 @@ const SignUp = () => {
               value={password}
               onChange={onHandlePasswordChange}
             />
-            <label htmlFor="secretContent"> secret message: </label>
             {error === "ValidationError" && (
               <ErrorMessage>Your need more than 10 characters</ErrorMessage>
             )}
+            <label htmlFor="secretContent"> secret message: </label>
             <input
               type="text"
               id="secretContent"
