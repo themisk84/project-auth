@@ -3,8 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import SignUp from "./component/SignUp";
-import SignIn from "./component/SignIn";
+import SignUp from "/component/SignUp";
+import SignIn from "/component/SignIn";
 import User from "component/User";
 import NotFound from "component/NotFound";
 import Start from "component/Start";
