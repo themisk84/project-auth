@@ -12,9 +12,21 @@ mongoose.Promise = Promise;
 // overridden when starting the server. For example:
 //
 const UserSchema = new mongoose.Schema({
-  username: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-  secretContent: { type: String, required: true, trim: true, minlength: 10 },
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  secretContent: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 10,
+  },
   accessToken: {
     type: String,
     default: () => crypto.randomBytes(128).toString("hex"),
@@ -50,15 +62,15 @@ const authenticateUser = async (req, res, next) => {
 
 app.get("/secretContent", authenticateUser);
 app.get("/secretContent", async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
-  console.log("User", req.user);
+  // const user = await User.findOne({ _id: req.user._id });
+  // console.log("User", req.user);
 
   res.json({
-    username: user.username,
-    response: user.secretContent,
+    username: req.user.username,
+    response: req.user.secretContent,
     success: true,
   });
-  console.log(user);
+  console.log(req.user);
 });
 
 // Start defining your routes here
@@ -71,6 +83,10 @@ app.post("/signup", async (req, res) => {
 
   try {
     const salt = bcrypt.genSaltSync();
+
+    if (secretContent.length < 10) {
+      throw { _message: "Password must be at least 10 characters long" };
+    }
 
     const newUser = await new User({
       username,
