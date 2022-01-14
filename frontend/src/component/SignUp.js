@@ -3,20 +3,52 @@ import styled from "styled-components";
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { SIGNUP_URL } from "../utils/urls";
+import { API_URL } from "../utils/urls";
 import user from "reducers/user";
+
+const Bg = styled.main`
+  margin-top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(66, 177, 162, 1);
+  /* background-image: url("assets/bg-img.jpg"); */
+  color: black;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #1d1d1d;
-  margin: 30px;
-  padding: 5px;
+  width: 600px;
+  height: 400px;
+  margin: auto;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: rgba(202, 199, 199, 0.7);
+`;
+const Legend = styled.legend`
+  font-size: 30px;
+  font-family: "Italiana", serif;
+  color: black;
+`;
+const Fieldset = styled.fieldset`
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  height: 370px;
+  border-radius: 10px;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  text-align: center;
 `;
 
 const Button = styled.button`
@@ -25,6 +57,18 @@ const Button = styled.button`
   margin-top: 20px;
   height: 30px;
   color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: green;
+  }
+`;
+
+const ErrorMessage = styled.p`
+  color: rgba(255, 61, 96, 1);
+  font-size: 15px;
+  margin: 0;
 `;
 
 const SignUp = () => {
@@ -33,7 +77,7 @@ const SignUp = () => {
   const [secretContent, setSecretContent] = useState("");
 
   const accessToken = useSelector((store) => store.user.accessToken);
-
+  const error = useSelector((store) => store.user.error);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -57,7 +101,7 @@ const SignUp = () => {
       }),
     };
 
-    fetch(SIGNUP_URL, options)
+    fetch(API_URL("signup"), options)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -68,49 +112,62 @@ const SignUp = () => {
             dispatch(user.actions.setError(null));
           });
         } else {
+          console.log(data);
           batch(() => {
             dispatch(user.actions.setUserId(null));
             dispatch(user.actions.setUsername(null));
             dispatch(user.actions.setAccessToken(null));
-            dispatch(user.actions.setError(data.response));
+            dispatch(user.actions.setError(data.response.name));
           });
         }
       });
   };
-
+  console.log(error);
   const onHandleUsernameChange = (event) => setUsername(event.target.value);
   const onHandlePasswordChange = (event) => setPassword(event.target.value);
   const onHandleSecretContentChange = (event) =>
     setSecretContent(event.target.value);
 
   return (
-    <FormWrapper>
-      <Form onSubmit={onHandleSignUp}>
-        <h1>Sign up</h1>
-        <label htmlFor="username" />
-        <input
-          id="username"
-          type="text"
-          value={username}
-          onChange={onHandleUsernameChange}
-        />
-        <label htmlFor="password" />
-        <input
-          id="password"
-          type="text"
-          value={password}
-          onChange={onHandlePasswordChange}
-        />
-        <label htmlFor="secretContent"> secretContent </label>
-        <input
-          type="text"
-          id="secretContent"
-          value={secretContent}
-          onChange={onHandleSecretContentChange}
-        />
-        <Button type="submit">Sign Up </Button>
-      </Form>
-    </FormWrapper>
+    <Bg>
+      <FormWrapper>
+        <Form onSubmit={onHandleSignUp}>
+          <Fieldset>
+            <Legend>Sign up:</Legend>
+            <label htmlFor="username" />
+            username:
+            {error === "MongoError" && (
+              <ErrorMessage>That user already exist!</ErrorMessage>
+            )}
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={onHandleUsernameChange}
+            />
+            <label htmlFor="password" />
+            password:
+            <input
+              id="password"
+              type="text"
+              value={password}
+              onChange={onHandlePasswordChange}
+            />
+            <label htmlFor="secretContent"> secret message: </label>
+            {error === "ValidationError" && (
+              <ErrorMessage>Your need more than 10 characters</ErrorMessage>
+            )}
+            <input
+              type="text"
+              id="secretContent"
+              value={secretContent}
+              onChange={onHandleSecretContentChange}
+            />
+            <Button type="submit">Sign Up!</Button>
+          </Fieldset>
+        </Form>
+      </FormWrapper>
+    </Bg>
   );
 };
 

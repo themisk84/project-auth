@@ -4,9 +4,10 @@ import { Provider } from "react-redux";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 import SignUp from "./component/SignUp";
-import Signin from "./component/Signin";
+import SignIn from "./component/SignIn";
 import User from "component/User";
 import NotFound from "component/NotFound";
+import Start from "component/Start";
 import user from "reducers/user";
 
 const reducer = combineReducers({
@@ -19,8 +20,9 @@ export const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<Start />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<Signin />} />
+          <Route path="/signin" element={<SignIn />} />
           <Route path="/user" element={<User />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

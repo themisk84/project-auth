@@ -1,4 +1,2 @@
-export const SIGNUP_URL = "https://helena-themis-login.herokuapp.com/signup";
-export const SIGNIN_URL = "https://helena-themis-login.herokuapp.com/signin";
-export const SECRET_URL =
-  "https://helena-themis-login.herokuapp.com/secretContent";
+const BASE_URL = "https://helena-themis-login.herokuapp.com";
+export const API_URL = (slug) => `${BASE_URL}/${slug}`;

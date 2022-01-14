@@ -3,15 +3,34 @@ import { batch, useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { SIGNIN_URL } from "utils/urls";
+import { API_URL } from "utils/urls";
 import user from "reducers/user";
+
+const Bg = styled.main`
+  margin-top: 0;
+  height: 100vh;
+  width: 100vw;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(66, 177, 162, 1);
+  /* background-image: url("assets/bg-img.jpg"); */
+  color: black;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
-  margin: 30px;
-  padding: 5px;
+  width: 600px;
+  height: 400px;
+  margin: auto;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: rgba(202, 199, 199, 0.7);
 `;
 
 const Form = styled.form`
@@ -19,16 +38,23 @@ const Form = styled.form`
   flex-direction: column;
 `;
 
-const SignInHeader = styled.h1`
-  text-align: center;
+const Legend = styled.legend`
+  font-size: 30px;
+  font-family: "Italiana", serif;
+  color: black;
 `;
-
-// const InputContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   margin-bottom: 10px;
-//   width: 50%;
-// `;
+const Fieldset = styled.fieldset`
+  border: 2px solid;
+  display: flex;
+  flex-direction: column;
+  height: 370px;
+  border-radius: 10px;
+`;
+const ErrorMessage = styled.p`
+  color: rgba(255, 61, 96, 1);
+  font-size: 15px;
+  margin: 0;
+`;
 
 const Button = styled.button`
   background-color: #1877f2;
@@ -36,25 +62,20 @@ const Button = styled.button`
   margin-top: 20px;
   height: 30px;
   color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 15px;
+  &:hover {
+    background-color: green;
+  }
 `;
 
-const AccountButton = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-self: center;
-  background-color: #42b72a;
-  width: 50%;
-  color: white;
-  margin-top: 20px;
-  height: 30px;
-`;
-
-const Signin = () => {
+const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const accessToken = useSelector((store) => store.user.accessToken);
+  const error = useSelector((store) => store.user.error);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -78,7 +99,7 @@ const Signin = () => {
       }),
     };
 
-    fetch(SIGNIN_URL, options)
+    fetch(API_URL("signin"), options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -106,36 +127,39 @@ const Signin = () => {
   // setSecretContent(event.target.value);
 
   return (
-    <FormWrapper>
-      <Link to="/user"></Link>
-      <Form onSubmit={onHandleSignIn}>
-        <SignInHeader>Sign in</SignInHeader>
-
-        <label htmlFor="username" />
-        <input
-          placeholder="username"
-          id="username"
-          type="text"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-
-        <label htmlFor="password" />
-        <input
-          placeholder="password"
-          id="password"
-          type="text"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-
-        <Button type="submit">Log in!</Button>
-        {/* <AccountButton onClick={onChangeSignUp}>
-          Create an account
-        </AccountButton> */}
-      </Form>
-    </FormWrapper>
+    <Bg>
+      <FormWrapper>
+        <Link to="/user"></Link>
+        <Form onSubmit={onHandleSignIn}>
+          <Fieldset>
+            <Legend>Sign in:</Legend>
+            <label htmlFor="username" />
+            Username:
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <input
+              placeholder="username"
+              id="username"
+              type="text"
+              value={username}
+              onChange={handleUsernameChange}
+            />
+            <label htmlFor="password" />
+            Password:
+            <input
+              placeholder="password"
+              id="password"
+              type="text"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <Button primary type="submit">
+              Sign in!
+            </Button>
+          </Fieldset>
+        </Form>
+      </FormWrapper>
+    </Bg>
   );
 };
 
-export default Signin;
+export default SignIn;
