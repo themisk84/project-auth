@@ -1,13 +1,8 @@
 # Project Auth
 
-Replace this readme with your own information about your project.
+In this project Me and Efthymios builded a Backend page and a frontend page that we later conected to each other. We have four endpoints. We used authorization for the accessToken and used the bcrypt.hashSync() to becrypt the password.
+You can sign in and upp. when you signing up you have to write a message, that we later display as a secret messae when you are logged in. We allso display error messages for 400, 401, 403 and 11000.
 
-Start by briefly describing the assignment in a sentence or two. Keep it short and to the point.
 
-## The problem
-
-Describe how you approached to problem, and what tools and techniques you used to solve it. How did you plan? What technologies did you use? If you had more time, what would be next?
-
-## View it live
-
-Every project should be deployed somewhere. Be sure to include the link to the deployed project so that the viewer can click around and see what it's all about.
+Take a look:
+https://priceless-mcnulty-65ee7c.netlify.app/
