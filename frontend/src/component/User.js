@@ -9,7 +9,7 @@ import user from "../reducers/user";
 
 const Bg = styled.main`
   margin-top: 0;
-  height: 100vh;
+  height: 120vh;
   width: 100vw;
   background-color: rgba(66, 177, 162, 1);
 `;
@@ -31,7 +31,6 @@ const UserContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 400px;
-  width: 500px;
   margin: auto;
   text-align: center;
 `;

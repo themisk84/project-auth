@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Bg = styled.main`
   margin-top: 0;
-  height: 100vh;
+  height: 120vh;
   width: 100vw;
   background-repeat: no-repeat;
   background-size: cover;

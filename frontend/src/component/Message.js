@@ -17,7 +17,6 @@ const criticAnimation = keyframes`
 `;
 
 const AnimationDiv = styled.div`
-  width: 500px;
   height: 100px;
   overflow: hidden;
   text-align: center;
